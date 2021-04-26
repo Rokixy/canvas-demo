@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="zh-CN">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas" style="display: block;"></canvas>
+    <script>
+        canvas.width = document.documentElement.clientWidth
+        canvas.height = document.documentElement.clientHeight
+
+        let ctx = canvas.getContext('2d')
+        ctx.lineCap = 'round'
+        ctx.lineWidth = 5
+
+        let from
+        let painting = false
+        let isTouchable = 'ontouchstart' in window
+
+        function drawLine(ctx, x1, y1, x2, y2) {
+            ctx.beginPath()
+            ctx.moveTo(x1, y1)
+            ctx.lineTo(x2, y2)
+            ctx.stroke()
+
+        }
+
+        if (isTouchable) {
+            canvas.ontouchstart = (e) => {
+                console.log(e)
+                let touchedPosition = e.touches[0]
+                from = [touchedPosition.clientX, touchedPosition.clientY]
+            }
+
+            canvas.ontouchmove = (e) => {
+                let touchedPosition = e.touches[0]
+                drawLine(ctx, from[0], from[1], touchedPosition.clientX, touchedPosition.clientY)
+                from = [touchedPosition.clientX, touchedPosition.clientY]
+            }
+        } else {
+            canvas.onmousedown = (e) => {
+                from = [e.clientX, e.clientY]
+                painting = true
+            }
+
+            canvas.onmousemove = (e) => {
+                if (painting) {
+                    drawLine(ctx, from[0], from[1], e.clientX, e.clientY)
+                    from = [e.clientX, e.clientY]
+                }
+            }
+
+            canvas.onmouseup = () => {
+                painting = false
+            }
+        }
+    </script>
+</body>
+
+</html>

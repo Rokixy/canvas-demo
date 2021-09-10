@@ -12,12 +12,41 @@
             padding: 0;
             box-sizing: border-box;
         }
+
+        .tipsWrapper {
+            position: absolute;
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.2);
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .tips {
+            padding-bottom: 40px;
+        }
+
+        .confirm {
+            padding: 10px 20px;
+        }
     </style>
 </head>
 
 <body>
+    <div class="tipsWrapper">
+        <p class="tips">
+            按住鼠标左键并拖动来开始作画。
+        </p>
+        <p class="tips">
+            Hold the left mouse button and drag to start drawing
+        </p>
+        <button class="confirm">OK</button>
+    </div>
     <canvas id="canvas" style="display: block;"></canvas>
     <script>
+        document.querySelector(".confirm").addEventListener('click', function () { document.querySelector('.tipsWrapper').remove() })
         canvas.width = document.documentElement.clientWidth
         canvas.height = document.documentElement.clientHeight
 
